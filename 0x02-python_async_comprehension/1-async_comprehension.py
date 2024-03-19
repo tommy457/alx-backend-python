@@ -2,7 +2,7 @@
 """
 Module for the async_comprehension function.
 """
-from typing import List 
+from typing import List
 
 async_generator = __import__('0-async_generator').async_generator
 
