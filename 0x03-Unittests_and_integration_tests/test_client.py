@@ -18,7 +18,7 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_org(self, input_data, mock_get_json):
         """ Test that `org` method returns the expected  correct value. """
         obj = GithubOrgClient(input_data)
-        obj.org
+        obj.org()
         test_url = obj.ORG_URL.format(org=input_data)
 
         mock_get_json.assert_called_once_with(test_url)
@@ -53,15 +53,13 @@ class TestGithubOrgClient(unittest.TestCase):
             mocked_property.assert_called_once()
 
     @parameterized.expand([
-        ({"repo": {"license": {"key": "my_license"}},
-          "license_key": "my_license"}, True),
-        ({"repo": {"license": {"key": "other_license"}},
-          "license_key": "my_license"}, False)
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False)
     ])
-    def test_has_license(self, input_data, expected_output):
+    def test_has_license(self, repo, license_key, expected):
         """ Test for the `has_license` method returns the expected  value. """
-        self.assertEqual(GithubOrgClient.has_license(**input_data),
-                         expected_output)
+        self.assertEqual(GithubOrgClient.has_license(repo, license_key),
+                         expected)
 
 
 if __name__ == "__main__":
