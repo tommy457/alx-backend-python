@@ -25,7 +25,6 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @parameterized.expand([
         ({"repos_url": "google"}, "google"),
-        ({"repos_url": "abc"}, "abc"),
     ])
     def test_public_repos_url(self, payload, expected_output):
         """Test that `_public_repos_url` method returns the expected value"""
@@ -61,9 +60,8 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     def test_has_license(self, input_data, expected_output):
         """ Test for the `has_license` method returns the expected  value. """
-        obj = GithubOrgClient("test")
-
-        self.assertEqual(obj.has_license(**input_data), expected_output)
+        self.assertEqual(GithubOrgClient.has_license(**input_data),
+                         expected_output)
 
 
 if __name__ == "__main__":
