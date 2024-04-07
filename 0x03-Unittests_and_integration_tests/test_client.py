@@ -3,7 +3,8 @@
 Unittests for the  client module.
 """
 from client import GithubOrgClient
-from parameterized import parameterized
+import fixtures
+from parameterized import parameterized, parameterized_class
 import unittest
 from unittest.mock import patch, PropertyMock
 
@@ -81,11 +82,11 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         cls.obj = GithubOrgClient("google")
 
     def test_public_repos(self):
-        """ Test thet  `public_repos` return correct output. """
+        """ Test thet `public_repos` return correct output. """
         self.assertEqual(self.obj.public_repos(), self.expected_repos)
 
     def test_public_repos_with_license(self):
-        """ Test thet  `public_repos` return correct output with license. """
+        """ Test thet `public_repos` return correct output with license. """
 
         self.assertEqual(
                 self.obj.public_repos("apache-2.0"), self.apache2_repos
