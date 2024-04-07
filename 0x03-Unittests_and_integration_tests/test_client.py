@@ -62,5 +62,40 @@ class TestGithubOrgClient(unittest.TestCase):
                          expected)
 
 
+@parameterized_class(("org_payload",
+                      "repos_payload",
+                      "expected_repos",
+                      "apache2_repos",),
+                     fixtures.TEST_PAYLOAD)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """ Integration tests """
+    @classmethod
+    def setUpClass(cls):
+        """ method called before any tests have been run. """
+        config = {'return_value.json.side_effect': [cls.org_payload,
+                                                    cls.repos_payload,
+                                                    cls.expected_repos,
+                                                    cls.apache2_repos]}
+        cls.get_patcher = patch('requests.get', **config)
+        cls.get_patcher.start()
+        cls.obj = GithubOrgClient("google")
+
+    def test_public_repos(self):
+        """ Test thet  `public_repos` return correct output. """
+        self.assertEqual(self.obj.public_repos(), self.expected_repos)
+
+    def test_public_repos_with_license(self):
+        """ Test thet  `public_repos` return correct output with license. """
+
+        self.assertEqual(
+                self.obj.public_repos("apache-2.0"), self.apache2_repos
+        )
+
+    @classmethod
+    def tearDownClass(cls):
+        """ method called after all tests have been run. """
+        cls.get_patcher.stop()
+
+
 if __name__ == "__main__":
     unittest.main()
